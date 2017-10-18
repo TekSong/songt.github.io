@@ -1,0 +1,40 @@
+dt {
+    display: block;
+}
+
+
+dl {
+    margin-bottom: 0;
+}
+
+dd {
+    -webkit-margin-start: 40px;
+    -moz-margin-start: 40px;
+}
+
+#page-wrap { 
+  width: 600px; 
+  margin: 15px auto; 
+  position: relative; 
+}
+
+#sidebar { 
+  width: 190px; 
+  position: fixed; 
+  margin-left: 410px; 
+}
+
+#container2{
+  margin-right: 15px auto;
+  margin-left:auto;
+  padding-left:15px;
+  padding-right:15px
+}
+
+.container2 {
+  display: flex;
+}
+
+.container2.space-around {
+  justify-content: space-around;
+}

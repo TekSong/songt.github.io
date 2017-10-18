@@ -1,0 +1,164 @@
+---
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: cosmo
+---
+
+<style>
+body {
+    position: absolute;
+    left: 0px;}
+</style>
+
+
+<!--html_preserve-->
+<div class="container">
+<!-- Static navbar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+        
+          <li class="">
+					<a href="/get_to_know_tek.html">Get To Know Tek</a>
+	</li>
+	              <li class="">
+      					<a href="/KATUSA.html">Second to None</a>
+			      	</li>   
+				  
+				  
+	<li class="">
+					<a href="/past_project.html">Past Project</a>
+	</li>
+
+	<li class="">
+					<a href="/cheat_sheet.html">Cheat Sheet</a>
+	</li>
+
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container-fluid -->
+</nav><!--navbar navbar-default-->
+</div>
+<!--/html_preserve-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+```
+
+<h1>HTML Scraping and Parsing</h1><ol type="I">
+Web scraping and parsing was(and will be) an important part of my research interest. There are many useful packages in `R` that makes web scraping simple: `rvest`, `XML`, `RCurl`, `curl`, `RSelenium`, and etc. 
+
+<h2><li>Using the <a href="https://cran.r-project.org/web/packages/rvest/rvest.pdf">`rvest` package</a></li></h2><ol type="1">
+```{r, eval=F}
+install.packages("rvest") #if you haven't installed `rvest` yet
+require(rvest) #load the `rvest` package
+```
+
+<h3><li>`read_html`</li></h3>
+read_html(*url*)
+
+Argument
+*url*: A url string
+
+```{r, tidy=TRUE, comment=""}
+read_html("https://jeffsong9.github.io/")
+```
+
+<h3><li>`html_nodes`</li></h3><ol type="a">
+
+<h4><li>Single Node Set</li></h4>
+* Usage: Parse `HTML` documents using XPath or CSS selector.
+html\_nodes(*html\_doc*, *css*, *xpath*)
+
+* Argument
+*html\_doc*: A `HTML` document or a node set
+*css*: css selector
+*xpath*: xpath selector
+
+* e.g.:
+read_html(*some\_url*) %>%<br>
+  html_nodes(xpath="//b")
+Extracts all bold font text using the xpath selector //b.
+
+read_html(*some\_url*) %>%<br>
+  html_nodes(xpath='//div [@id="*something*"])
+
+read_html(*some\_url*) %>%<br>
+  html_nodes("center")
+Extract using css selector center
+
+* chain subsetting
+read_html(*some\_url*) %>%<br>
+  html_nodes("center") %>%<br>
+  html_nodes("font")
+  
+```{r, comment=""}
+read_html("https://jeffsong9.github.io/") %>%
+  html_nodes(xpath="//div") %>%
+  head(5)
+```
+  
+  
+cf) `html_node`
+
+<h4><li>Multiple Node Sets</li></h4>
+One may be interested in extracting multiple node sets. I find it convenient to save all XPath queries in a vector and use the `lapply` function in conjunction with the `html_nodes` function.
+
+
+```{r, comment=""}
+paths=c(profile='//div [@class="profile-info-mod profile-essentials"]',
+        side_bar='//div [@class="floating-sidebar-float"]')
+
+lapply(paths, function(x) read_html("https://jeffsong9.github.io/") %>%
+  html_nodes(xpath=x))
+```
+
+
+
+
+</ol><!--html_nodes-->
+
+<h3><li>`html_attr`</li></h3>
+Usage: Extrac attributes with a given name
+html_attr(*html\_doc*, *name*)
+
+Arguments:
+*html node*: A`HTML` document or a node set
+*name*: Name of attribute to extract
+
+e.g.
+read_html(*some\_url*) %>%<br>
+  html_nodes(xpath="//a") %>%<br>
+  html_attr(name="href")
+
+```{r, comment=""}
+read_html("https://jeffsong9.github.io/") %>%
+  html_nodes(xpath="//img [@class='photo']")
+```
+
+```{r, comment=""}
+read_html("https://jeffsong9.github.io/") %>%
+  html_nodes(xpath="//img [@class='photo']") %>%
+  html_attr(name="src")
+```
+
+cf) html_attrs
+
+
+</ol><!--rvest package-->
+</ol><!--HTML Scraping and parsing-->
